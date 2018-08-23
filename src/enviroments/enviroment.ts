@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://uld-api.sita.siclo-mobile.com',
+  crowdApiUrl: 'https://uld-crowd.sita.siclo-mobile.com/crowd-positions',
   adalConfig: {
     tenant: 'sitaiot.onmicrosoft.com',
     clientId: 'c023c4e4-b84a-4c1a-ace3-d32289f08cff',
