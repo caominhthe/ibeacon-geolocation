@@ -40,7 +40,8 @@ export class HomePage implements OnInit {
     }
     this.platform.ready().then(() => {
       this.initialise();
-      this.configureBackgroundGeolocation.bind(this);
+      console.log('About to Configuring BackgroundGeolocation');
+      this.configureBackgroundGeolocation();
     }
     );
   }
@@ -64,27 +65,27 @@ export class HomePage implements OnInit {
         this.delegate = this.iBeacon.Delegate();
 
         try {
-        // Subscribe to some of the delegate's event handlers
-        this.delegate.didRangeBeaconsInRegion()
-          .subscribe(
-            data => {
-              this.counting++;
-              console.log('My Beacons ', JSON.stringify(this.beacons));
-              this.zone.run(() => {
+          // Subscribe to some of the delegate's event handlers
+          this.delegate.didRangeBeaconsInRegion()
+            .subscribe(
+              data => {
+                this.counting++;
+                console.log('My Beacons ', JSON.stringify(this.beacons));
+                this.zone.run(() => {
 
-                if (data['beacons']) {
-                  this.beacons = [];
-                }
+                  if (data['beacons']) {
+                    this.beacons = [];
+                  }
 
-                let beaconList = data.beacons;
-                beaconList.forEach((beacon) => {
-                  this.postCrowdPostion(beacon);
-                  this.beacons.push(beacon);
+                  let beaconList = data.beacons;
+                  beaconList.forEach((beacon) => {
+                    this.postCrowdPostion(beacon);
+                    this.beacons.push(beacon);
+                  });
                 });
-              });
-            },
-            error => console.error()
-          );
+              },
+              error => console.error()
+            );
         } catch(e) {
           console.log(e);
         }
@@ -114,30 +115,29 @@ export class HomePage implements OnInit {
 
   configureBackgroundGeolocation() {
     // 1. Get a reference to the plugin
+    console.log('Configuring BackgroundGeolocation');
     try {
-    this.bgGeo = (<any>window).BackgroundGeolocation;
+      this.bgGeo = (<any>window).BackgroundGeolocation;
 
-    // 3. Configure it.
-    // BackgroundGeoLocation is highly configurable.
-    this.bgGeo.ready({
-      // Geolocation config
-      desiredAccuracy: 0,
-      distanceFilter: 10,
-      stationaryRadius: 25,
-      // Activity Recognition config
-      activityRecognitionInterval: 10000,
-      stopTimeout: 5,
-      // Application config
-      debug: true,  // <-- Debug sounds & notifications.
-      stopOnTerminate: false,
-      startOnBoot: true,
-    }, function(state) {
-      // This callback is executed when the plugin is ready to use.
-      console.log('BackgroundGeolocation is configured and ready to use');
-      if (!state.enabled) {
+      // 3. Configure it.
+      // BackgroundGeoLocation is highly configurable.
+      this.bgGeo.ready({
+        // Geolocation config
+        desiredAccuracy: 0,
+        distanceFilter: 10,
+        stationaryRadius: 25,
+        // Activity Recognition config
+        activityRecognitionInterval: 10000,
+        stopTimeout: 5,
+        // Application config
+        debug: false,  // <-- Debug sounds & notifications.
+        stopOnTerminate: false,
+        startOnBoot: true,
+      }, function(state) {
+        // This callback is executed when the plugin is ready to use.
+        console.log('BackgroundGeolocation is configured and ready to use');
         this.bgGeo.start();
-      }
-    });
+      });
     } catch(e) {
       console.log(e);
     }
@@ -148,8 +148,14 @@ export class HomePage implements OnInit {
   }
 
   postCrowdPostion(beacon) {
-    if (!!this.bgGeo) {
-      console.log('location ',this.bgGeo.getLocations());
+    try {
+      if (!!this.bgGeo) {
+        this.bgGeo.getCurrentPosition().then((data) => {
+          console.log(JSON.stringify(data));
+        });
+      }
+    } catch(e) {
+
     }
   }
 }
