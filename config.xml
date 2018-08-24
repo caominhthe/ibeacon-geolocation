@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.siclo-mobile.sita" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Ionic 3 Start Theme</name>
+<widget id="com.siclomobile.sita" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>SitaULD</name>
     <description>Ionic 3 Start Theme</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
     <content src="index.html" />
@@ -24,6 +24,24 @@
     <preference name="fullscreen" value="false" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <allow-navigation href="http://192.168.10.23:8100" />
+    <allow-navigation href="http://192.168.1.112:8100" />
+    <allow-navigation href="http://169.254.228.29:8100" />
+    <allow-navigation href="http://169.254.67.157:8100" />
+    <allow-navigation href="http://169.254.9.29:8100" />
+    <platform name="ios">
+        <hook src="scripts/iosAfterBuild.js" type="after_build" />
+    </platform>
+    <allow-navigation href="http://169.254.103.113:8100" />
+    <allow-navigation href="http://169.254.126.13:8100" />
+    <allow-navigation href="http://169.254.53.61:8100" />
+    <allow-navigation href="http://169.254.121.94:8100" />
+    <allow-navigation href="http://169.254.207.182:8100" />
+    <allow-navigation href="http://169.254.234.142:8101" />
+    <platform name="android">
+        <preference name="loadUrlTimeoutValue" value="700000" />
+    </platform>
+    <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
@@ -42,9 +60,4 @@
         <variable name="LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION" value="Background location-tracking is required" />
         <variable name="MOTION_USAGE_DESCRIPTION" value="Using the accelerometer increases battery-efficiency by intelligently toggling location-tracking only when the device is detected to be moving" />
     </plugin>
-    <allow-navigation href="http://192.168.1.112:8100" />
-    <allow-navigation href="http://169.254.228.29:8100" />
-    <allow-navigation href="http://169.254.67.157:8100" />
-    <engine name="android" spec="^6.4.0" />
-    <engine name="ios" spec="^4.5.0" />
 </widget>

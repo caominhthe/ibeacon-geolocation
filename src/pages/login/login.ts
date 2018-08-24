@@ -49,6 +49,6 @@ export class LoginPage {
         console.log('Token will expire on', authResponse.expiresOn);
         this.nav.push('home-page');
       })
-      .catch((e: any) => console.log('Authentication failed: ' + e.toString()));
+      .catch((e: any) => console.log('Authentication failed'));
   }
 }
