@@ -42,6 +42,9 @@ export class HomePage implements OnDestroy {
     this.platform.ready().then(async () => {
       this.authContext = this.msAdal.createAuthenticationContext('https://login.microsoftonline.com/sitaiot.onmicrosoft.com');
       await this.initialise();
+      if (!(await this.iBeacon.isBluetoothEnabled())) {
+        this.iBeacon.enableBluetooth();
+      }
       await this.configureBackgroundGeolocation();
       await this.iBeacon.startRangingBeaconsInRegion(this.region);
       await this.bgGeo.start();
@@ -104,7 +107,6 @@ export class HomePage implements OnDestroy {
         resolve(false);
       }
     });
-
     return promise;
   }
 
@@ -140,7 +142,6 @@ export class HomePage implements OnDestroy {
 
       // Not update location of Uld that get updated in last 5 mins
       if (!!currentBeacon && currentBeacon.date && ((<any>now - currentBeacon.date) < environment.beaconTimeoutAge) ) {
-        console.log('Beacon not timeout yet');
         return;
       }
 
@@ -151,7 +152,6 @@ export class HomePage implements OnDestroy {
 
       this.authContext.acquireTokenSilentAsync('https://graph.windows.net', 'c023c4e4-b84a-4c1a-ace3-d32289f08cff', null)
         .then((authResponse: AuthenticationResult) => {
-          console.log('woohoo');
           this.bgGeo.getCurrentPosition().then((data) => {
             this.callCrowdAPI(authResponse.accessToken, beacon, data['coords']['latitude'], data['coords']['longitude'])
           });
@@ -166,7 +166,6 @@ export class HomePage implements OnDestroy {
   }
 
   async callCrowdAPI(accessToken, beacon, lat, lon) {
-    console.log('woohoo 2');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
