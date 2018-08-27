@@ -5,9 +5,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {Keyboard} from '@ionic-native/keyboard';
-import {ActivityService} from '../services/activity-service';
-import {TripService} from '../services/trip-service';
-import {WeatherProvider} from '../services/weather';
 import {MyApp} from './app.component';
 import {HomePage} from '../pages/home/home';
 import {LoginPage} from '../pages/login/login';
@@ -15,13 +12,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MSAdal } from '@ionic-native/ms-adal';
 import { LoginPageModule } from '../pages/login/login.module';
 import { HomePageModule } from '../pages/home/home.module';
-
-// import services
-// end import services
-// end import services
-
-// import pages
-// end import pages
 
 @NgModule({
   declarations: [
@@ -51,9 +41,6 @@ import { HomePageModule } from '../pages/home/home.module';
     SplashScreen,
     Keyboard,
     MSAdal,
-    ActivityService,
-    TripService,
-    WeatherProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

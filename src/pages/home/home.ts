@@ -150,7 +150,7 @@ export class HomePage implements OnDestroy {
         this.beaconArray.push(beacon);
       }
 
-      this.authContext.acquireTokenSilentAsync('https://graph.windows.net', 'c023c4e4-b84a-4c1a-ace3-d32289f08cff', null)
+      this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null)
         .then((authResponse: AuthenticationResult) => {
           this.bgGeo.getCurrentPosition().then((data) => {
             this.callCrowdAPI(authResponse.accessToken, beacon, data['coords']['latitude'], data['coords']['longitude'])
@@ -178,6 +178,7 @@ export class HomePage implements OnDestroy {
       'date': (new Date()).toISOString(),
       'beacon': {
         'proximityUUID': beacon['uuid'],
+        'rssi': beacon['rssi'],
         'major': beacon['major'],
         'minor': beacon['minor']
       }
