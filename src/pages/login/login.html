@@ -1,24 +1,18 @@
 <!-- -->
 <ion-content padding class="animated fadeIn login auth-page">
-  <div class="login-content">
-
-    <!-- Logo -->
-    <div padding-horizontal text-center class="animated fadeInDown">
-      <div class="logo"></div>
-      <h2 ion-text class="text-primary">
-        <strong>SITA</strong> Demo Application
-      </h2>
+<div class="container-wrapper">
+    <div class="container">
+        <div class="login-container">
+            <div class="login-left-side">
+                <div class="logo">
+                    <img src="assets/images/logo-white.png" alt="logo" >
+                </div>
+                <div class="input-group">
+                    <button (click)="login()" class="login-btn" mat-raised-button>Login</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <div>
-      <button ion-button icon-start block color="dark" tappable (click)="login()">
-        <ion-icon name="log-in"></ion-icon>
-        SIGN IN
-      </button>
-
-    </div>
-
-
-  </div>
+</div>
 </ion-content>
