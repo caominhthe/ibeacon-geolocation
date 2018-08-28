@@ -153,7 +153,7 @@ export class HomePage implements OnDestroy {
       this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null)
         .then((authResponse: AuthenticationResult) => {
           this.bgGeo.getCurrentPosition().then((data) => {
-            this.callCrowdAPI(authResponse.accessToken, beacon, data['coords']['latitude'], data['coords']['longitude'])
+            this.callCrowdAPI(authResponse.accessToken, beacon, data['coords'])
           });
         })
         .catch((e: any) => {
@@ -165,7 +165,7 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  async callCrowdAPI(accessToken, beacon, lat, lon) {
+  async callCrowdAPI(accessToken, beacon, coords) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -173,8 +173,11 @@ export class HomePage implements OnDestroy {
       })
     };
     let crowdInfo = {
-      'latitude': lat,
-      'longitude': lon,
+      'latitude': coords['latitude'],
+      'longitude': coords['longitude'],
+      'speed': coords['speed'],
+      'accuracy': coords['accuracy'],
+      'heading': coords['heading'],
       'date': (new Date()).toISOString(),
       'beacon': {
         'proximityUUID': beacon['uuid'],
