@@ -3,7 +3,7 @@
     <name>SitaULD</name>
     <description>Ionic 3 Start Theme</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.10.23:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -40,6 +40,7 @@
     <platform name="android">
         <preference name="loadUrlTimeoutValue" value="700000" />
     </platform>
+    <allow-navigation href="http://169.254.158.107:8100" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
