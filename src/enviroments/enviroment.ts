@@ -7,9 +7,15 @@ export const environment = {
   beaconRangingInterval: 30000, //ms
   beaconRangingTime: 5000, //ms
   beaconTimeoutAge: 0, //ms
-  crowdApiUrl: 'https://uld-crowd.sita.siclo-mobile.com/crowd-positions/',
+  regions: [
+    {
+      name: 'TestRegion', //required
+      uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D' //required
+    }],
+  crowdApiUrl: 'https://crowd-api.westeurope.cloudapp.azure.com/crowd-positions',
   adalConfig: {
     tenant: 'sitaiot.onmicrosoft.com',
+    authenticationContext: 'https://login.microsoftonline.com/sitaiot.onmicrosoft.com',
     clientId: 'c023c4e4-b84a-4c1a-ace3-d32289f08cff',
     endpoints: {
       'https://uld-api.sita.siclo-mobile.com': 'c03ed3b4-5438-4247-b6cd-ef2e20da60fe',

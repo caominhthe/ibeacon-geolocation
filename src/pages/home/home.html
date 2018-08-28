@@ -1,13 +1,13 @@
 <ion-header>
     <ion-title>
-      Current Beacons {{counting}}
+      Current Beacons {{counting}} Status: {{status}}
     </ion-title>
 </ion-header>
 
 <ion-content>
   <ion-list no-lines>
 
-    <ion-item *ngFor='let beacon of beacons'>
+    <ion-item *ngFor='let beacon of beaconArray'>
       <ion-grid>
         <ion-row>
           <ion-col>Major</ion-col>

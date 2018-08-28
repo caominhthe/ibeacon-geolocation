@@ -20,13 +20,14 @@ export class HomePage implements OnDestroy {
   platformList: string = '';
   isApp: boolean = true;
   delegate : any;
-  region: any;
+  regions = [];
   beacons: any;
   bgGeo: any;
   counting = 0;
   authContext: any;
   taskRunner: any;
   beaconArray = [];
+  status: string;
 
   constructor(public nav: NavController,
     public platform: Platform,
@@ -40,16 +41,27 @@ export class HomePage implements OnDestroy {
     this.platformList = platforms.join(', ');
 
     this.platform.ready().then(async () => {
-      this.authContext = this.msAdal.createAuthenticationContext('https://login.microsoftonline.com/sitaiot.onmicrosoft.com');
+      this.authContext = this.msAdal.createAuthenticationContext(environment.adalConfig.authenticationContext);
       await this.initialise();
       if (!(await this.iBeacon.isBluetoothEnabled())) {
         this.iBeacon.enableBluetooth();
       }
       await this.configureBackgroundGeolocation();
-      await this.iBeacon.startRangingBeaconsInRegion(this.region);
+      await this.startRangingBeaconsInRegion();
       await this.bgGeo.start();
+      this.status = 'Start';
       this.setupTaskRunner();
     });
+  }
+
+  async startRangingBeaconsInRegion() {
+    for (let i of this.regions)
+      await this.iBeacon.startRangingBeaconsInRegion(i);
+  }
+
+  async stopRangingBeaconsInRegion() {
+    for (let i of this.regions)
+      await this.iBeacon.stopRangingBeaconsInRegion(i);
   }
 
   setupTaskRunner() {
@@ -57,11 +69,18 @@ export class HomePage implements OnDestroy {
       try {
         console.log('Task start');
         await this.bgGeo.start();
-        await this.iBeacon.startRangingBeaconsInRegion(this.region);
-        setTimeout(() => {
+        this.status = 'Start';
+        await this.startRangingBeaconsInRegion();
+        setTimeout(async () => {
           console.log('Task stop');
-          this.iBeacon.stopRangingBeaconsInRegion(this.region);
+          this.stopRangingBeaconsInRegion();
+          for (let beacon of this.beaconArray) {
+            let currentLocation = await this.bgGeo.getCurrentPosition();
+            await this.postCrowdPostion(beacon, currentLocation);
+          };
+          this.beaconArray = [];
           this.bgGeo.stop();
+          this.status = 'Stop';
         }, environment.beaconRangingTime)
       } catch (e) {
         console.log('Error ranging beacon');
@@ -75,7 +94,11 @@ export class HomePage implements OnDestroy {
 
         this.iBeacon.requestAlwaysAuthorization();
 
-        this.region = this.iBeacon.BeaconRegion('deskBeacon', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D');
+        const regions = environment.regions;
+        regions.forEach((r) => {
+          this.regions.push(this.iBeacon.BeaconRegion(r.name, r.uuid))
+        });
+
         this.delegate = this.iBeacon.Delegate();
 
         try {
@@ -84,15 +107,17 @@ export class HomePage implements OnDestroy {
               data => {
                 this.counting++;
                 this.zone.run(() => {
-
-                  if (data['beacons']) {
-                    this.beacons = [];
-                  }
-
                   let beaconList = data.beacons;
                   beaconList.forEach((beacon) => {
-                    this.postCrowdPostion(beacon);
-                    this.beacons.push(beacon);
+                    const idx = this.beaconArray.findIndex(i => i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor);
+                    if (idx > -1 ) {
+                      this.beaconArray[idx]['rssi'] = beacon['rssi'] == 0 || this.beaconArray[idx]['rssi'] > beacon['rssi'] ?
+                        this.beaconArray[idx]['rssi'] : beacon['rssi'];
+                    } else {
+                      if (beacon['rssi']) {
+                        this.beaconArray.push(beacon);
+                      }
+                    }
                   });
                 });
               },
@@ -135,7 +160,7 @@ export class HomePage implements OnDestroy {
     });
   }
 
-  postCrowdPostion(beacon) {
+  async postCrowdPostion(beacon, currentLocation) {
     try {
       let currentBeacon = this.beaconArray.find((i) => i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor);
       const now = new Date();
@@ -150,16 +175,8 @@ export class HomePage implements OnDestroy {
         this.beaconArray.push(beacon);
       }
 
-      this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null)
-        .then((authResponse: AuthenticationResult) => {
-          this.bgGeo.getCurrentPosition().then((data) => {
-            this.callCrowdAPI(authResponse.accessToken, beacon, data['coords'])
-          });
-        })
-        .catch((e: any) => {
-          console.log('No token found in cache');
-          this.nav.push('login-page');
-        });
+      let authResponse = await this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null);
+      this.callCrowdAPI(authResponse.accessToken, beacon, currentLocation['coords']);
     } catch(e) {
       console.log(e);
     }
@@ -188,7 +205,7 @@ export class HomePage implements OnDestroy {
     }
     let data = await this.http.post(environment.crowdApiUrl, crowdInfo, httpOptions ).toPromise();
     console.log('update beacon ', beacon['uuid']);
-    this. beaconArray = this.beaconArray.map((i) => {
+    this.beaconArray = this.beaconArray.map((i) => {
       if (i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor) {
         let obj = JSON.parse(JSON.stringify(i));
         obj.date = new Date();
