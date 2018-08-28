@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  beaconRangingInterval: 60000, //ms
-  beaconRangingTime: 10000, //ms
-  beaconTimeoutAge: 300000, //ms
+  beaconRangingInterval: 30000, //ms
+  beaconRangingTime: 5000, //ms
+  beaconTimeoutAge: 0, //ms
   crowdApiUrl: 'https://uld-crowd.sita.siclo-mobile.com/crowd-positions/',
   adalConfig: {
     tenant: 'sitaiot.onmicrosoft.com',
