@@ -2,6 +2,11 @@
 // App Shared Imports
 // --------------------------------------------------
 
+body{
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+}
+
 // global styles
 .primary-bg {
   background-color: color($colors, primary) !important;

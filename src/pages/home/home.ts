@@ -5,6 +5,7 @@ import { debounceTime } from 'rxjs/operators';
 import { Events } from 'ionic-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-native/ms-adal';
+import { BackgroundMode } from '@ionic-native/background-mode';
 import { environment } from '../../enviroments/enviroment';
 
 @IonicPage({
@@ -31,12 +32,15 @@ export class HomePage implements OnDestroy {
 
   constructor(public nav: NavController,
     public platform: Platform,
+
     public iBeacon: IBeacon,
     public msAdal: MSAdal,
+    private backgroundMode: BackgroundMode,
     public http: HttpClient,
     public zone: NgZone
   ) {
     let platforms = this.platform.platforms();
+    this.backgroundMode.enable();
 
     this.platformList = platforms.join(', ');
 

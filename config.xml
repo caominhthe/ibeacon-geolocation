@@ -29,7 +29,6 @@
     <allow-navigation href="http://169.254.67.157:8100" />
     <allow-navigation href="http://169.254.9.29:8100" />
     <platform name="ios">
-        <hook src="scripts/iosAfterBuild.js" type="after_build" />
     </platform>
     <allow-navigation href="http://169.254.103.113:8100" />
     <allow-navigation href="http://169.254.126.13:8100" />
@@ -44,7 +43,6 @@
     <allow-navigation href="http://169.254.179.174:8100" />
     <allow-navigation href="http://169.254.193.162:8100" />
     <allow-navigation href="http://169.254.49.209:8100" />
-    <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
@@ -64,4 +62,9 @@
         <variable name="LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION" value="Background location-tracking is required" />
         <variable name="MOTION_USAGE_DESCRIPTION" value="Using the accelerometer increases battery-efficiency by intelligently toggling location-tracking only when the device is detected to be moving" />
     </plugin>
+    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
+    <allow-navigation href="http://169.254.216.216:8100" />
+    <allow-navigation href="http://192.168.10.41:8100" />
+    <allow-navigation href="http://169.254.91.79:8100" />
+    <engine name="ios" spec="~4.5.5" />
 </widget>

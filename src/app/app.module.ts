@@ -12,6 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MSAdal } from '@ionic-native/ms-adal';
 import { LoginPageModule } from '../pages/login/login.module';
 import { HomePageModule } from '../pages/home/home.module';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { HomePageModule } from '../pages/home/home.module';
     StatusBar,
     SplashScreen,
     Keyboard,
+    BackgroundMode,
     MSAdal,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
