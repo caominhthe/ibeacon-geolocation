@@ -34,7 +34,7 @@
     "com.unarin.cordova.beacon": "~3.7.0",
     "cordova-android": "^7.0.0",
     "cordova-background-geolocation-lt": "~2.12.2",
-    "cordova-ios": "4.5.5",
+    "cordova-ios": "^4.5.5",
     "cordova-plugin-background-fetch": "^5.4.1",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-cocoalumberjack": "0.0.4",

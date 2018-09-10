@@ -47,9 +47,7 @@ export class HomePage implements OnDestroy {
     this.platform.ready().then(async () => {
       this.authContext = this.msAdal.createAuthenticationContext(environment.adalConfig.authenticationContext);
       await this.initialise();
-      if (!(await this.iBeacon.isBluetoothEnabled())) {
-        this.iBeacon.enableBluetooth();
-      }
+      this.iBeacon.enableBluetooth();
       await this.configureBackgroundGeolocation();
       await this.startRangingBeaconsInRegion();
       await this.bgGeo.start();

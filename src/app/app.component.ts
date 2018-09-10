@@ -36,7 +36,6 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.splashScreen.hide();
       this.statusBar.hide();
       this.statusBar.overlaysWebView(true);
       this.rootPage = LoginPage;

@@ -3,7 +3,7 @@
     <name>SitaULD</name>
     <description>Ionic 3 Start Theme</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://169.254.139.91:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -43,7 +43,6 @@
     <allow-navigation href="http://169.254.179.174:8100" />
     <allow-navigation href="http://169.254.193.162:8100" />
     <allow-navigation href="http://169.254.49.209:8100" />
-    <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
@@ -62,9 +61,16 @@
         <variable name="LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION" value="Background location-tracking is required" />
         <variable name="MOTION_USAGE_DESCRIPTION" value="Using the accelerometer increases battery-efficiency by intelligently toggling location-tracking only when the device is detected to be moving" />
     </plugin>
-    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <allow-navigation href="http://169.254.216.216:8100" />
     <allow-navigation href="http://192.168.10.41:8100" />
     <allow-navigation href="http://169.254.91.79:8100" />
-    <engine name="ios" spec="~4.5.5" />
+    <allow-navigation href="http://169.254.225.137:8100" />
+    <allow-navigation href="http://169.254.19.173:8100" />
+    <allow-navigation href="http://169.254.232.116:8100" />
+    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
+    <allow-navigation href="http://192.168.10.42:8101" />
+    <allow-navigation href="http://192.168.10.42:8100" />
+    <allow-navigation href="http://169.254.139.91:8100" />
+    <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="^4.5.5" />
 </widget>

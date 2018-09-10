@@ -13,6 +13,7 @@ import { MSAdal } from '@ionic-native/ms-adal';
 import { LoginPageModule } from '../pages/login/login.module';
 import { HomePageModule } from '../pages/home/home.module';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { HeaderComponent } from "../shared/header.component";
 
 @NgModule({
   declarations: [
