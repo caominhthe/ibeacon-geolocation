@@ -27,6 +27,7 @@ export class LoginPage {
       this.authContext = this.msAdal.createAuthenticationContext('https://login.microsoftonline.com/sitaiot.onmicrosoft.com');
       this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null)
         .then((authResponse: AuthenticationResult) => {
+          console.log('the bug is here');
           this.nav.push('home-page');
         })
         .catch((e: any) => {

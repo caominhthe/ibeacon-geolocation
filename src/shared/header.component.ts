@@ -1,23 +1,47 @@
-import {Component, } from '@angular/core';
+import {Component,Output, EventEmitter} from '@angular/core';
 import {debounceTime} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import { AlertController } from "ionic-angular/components/alert/alert-controller";
+import { NavController } from "ionic-angular/navigation/nav-controller";
+import { GeneralProviderService } from "../providers/general-provider.service";
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss']
+  selector: 'app-header',
+  templateUrl: './header.component.html',
 })
 export class HeaderComponent {
 
-    showSearchType = false;
+  showSearchType = false;
 
-  constructor(){}
+  @Output()
+  logout = new EventEmitter();
 
-    openLogoutDialog(): void {
-        // this.dialog.open(LogoutComponent, {
-        //     width: '250px',
-        //     data: {}
-        // });
-    }
+
+  constructor(
+    private alertCtrl: AlertController,
+    private generalProviderService: GeneralProviderService,
+    private navCtrl: NavController
+  ){}
+
+  openLogoutDialog() {
+    let alert = this.alertCtrl.create({
+      title: 'Warning',
+      message: 'Do you want to log out?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.generalProviderService.logOut();
+            this.logout.emit();
+          }
+        }]
+    });
+    alert.present();
+  }
 }
-

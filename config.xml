@@ -3,7 +3,7 @@
     <name>SitaULD</name>
     <description>Ionic 3 Start Theme</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
-    <content original-src="index.html" src="http://169.254.139.91:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -29,6 +29,34 @@
     <allow-navigation href="http://169.254.67.157:8100" />
     <allow-navigation href="http://169.254.9.29:8100" />
     <platform name="ios">
+        <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
+        <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
+        <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
+        <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" />
+        <splash height="768" src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" />
+        <splash height="1536" src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048" />
+        <splash height="1136" src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" />
+        <splash height="1334" src="resources/ios/splash/Default-667h.png" width="750" />
+        <splash height="2208" src="resources/ios/splash/Default-736h.png" width="1242" />
+        <icon height="57" src="resources/ios/icon/icon.png" width="57" />
+        <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
+        <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
+        <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />
+        <icon height="120" src="resources/ios/icon/icon-40@3x.png" width="120" />
+        <icon height="50" src="resources/ios/icon/icon-50.png" width="50" />
+        <icon height="100" src="resources/ios/icon/icon-50@2x.png" width="100" />
+        <icon height="60" src="resources/ios/icon/icon-60.png" width="60" />
+        <icon height="120" src="resources/ios/icon/icon-60@2x.png" width="120" />
+        <icon height="180" src="resources/ios/icon/icon-60@3x.png" width="180" />
+        <icon height="72" src="resources/ios/icon/icon-72.png" width="72" />
+        <icon height="144" src="resources/ios/icon/icon-72@2x.png" width="144" />
+        <icon height="76" src="resources/ios/icon/icon-76.png" width="76" />
+        <icon height="152" src="resources/ios/icon/icon-76@2x.png" width="152" />
+        <icon height="167" src="resources/ios/icon/icon-83.5@2x.png" width="167" />
+        <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />
+        <icon height="58" src="resources/ios/icon/icon-small@2x.png" width="58" />
+        <icon height="87" src="resources/ios/icon/icon-small@3x.png" width="87" />
+        <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024" />
     </platform>
     <allow-navigation href="http://169.254.103.113:8100" />
     <allow-navigation href="http://169.254.126.13:8100" />
@@ -38,17 +66,37 @@
     <allow-navigation href="http://169.254.234.142:8101" />
     <platform name="android">
         <preference name="loadUrlTimeoutValue" value="700000" />
+        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
+        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
+        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
+        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
+        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
+        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
     </platform>
     <allow-navigation href="http://169.254.158.107:8100" />
     <allow-navigation href="http://169.254.179.174:8100" />
     <allow-navigation href="http://169.254.193.162:8100" />
     <allow-navigation href="http://169.254.49.209:8100" />
+    <allow-navigation href="http://169.254.216.216:8100" />
+    <allow-navigation href="http://192.168.10.41:8100" />
+    <allow-navigation href="http://169.254.91.79:8100" />
+    <allow-navigation href="http://169.254.225.137:8100" />
+    <allow-navigation href="http://169.254.19.173:8100" />
+    <allow-navigation href="http://169.254.232.116:8100" />
+    <allow-navigation href="http://192.168.10.42:8101" />
+    <allow-navigation href="http://192.168.10.42:8100" />
+    <allow-navigation href="http://169.254.139.91:8100" />
+    <allow-navigation href="http://169.254.141.86:8100" />
+    <allow-navigation href="http://192.168.10.24:8100" />
+    <allow-navigation href="http://169.254.225.88:8100" />
+    <allow-navigation href="http://169.254.3.28:8100" />
+    <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="^4.5.5" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-sqlite-storage" spec="^2.1.4" />
     <plugin name="com.unarin.cordova.beacon" spec="~3.7.0" />
     <plugin name="cordova-plugin-ms-adal" spec="^0.10.1" />
@@ -61,16 +109,14 @@
         <variable name="LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION" value="Background location-tracking is required" />
         <variable name="MOTION_USAGE_DESCRIPTION" value="Using the accelerometer increases battery-efficiency by intelligently toggling location-tracking only when the device is detected to be moving" />
     </plugin>
-    <allow-navigation href="http://169.254.216.216:8100" />
-    <allow-navigation href="http://192.168.10.41:8100" />
-    <allow-navigation href="http://169.254.91.79:8100" />
-    <allow-navigation href="http://169.254.225.137:8100" />
-    <allow-navigation href="http://169.254.19.173:8100" />
-    <allow-navigation href="http://169.254.232.116:8100" />
     <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
-    <allow-navigation href="http://192.168.10.42:8101" />
-    <allow-navigation href="http://192.168.10.42:8100" />
-    <allow-navigation href="http://169.254.139.91:8100" />
-    <engine name="android" spec="^7.0.0" />
-    <engine name="ios" spec="^4.5.5" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
+    <allow-navigation href="http://169.254.234.182:8100" />
+    <plugin name="cordova-fabric-plugin" spec="^1.1.14-dev">
+        <variable name="FABRIC_API_KEY" value="70dedfde89b79b2a5456dc613a6ba5573684ff8c" />
+        <variable name="FABRIC_API_SECRET" value="b1b255bb9a2da2337da86727309a5f7d67700b6d347947e8dbe525feb902c24d" />
+    </plugin>
+    <allow-navigation href="http://169.254.248.111:8100" />
 </widget>

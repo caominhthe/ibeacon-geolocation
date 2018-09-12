@@ -4,14 +4,27 @@
 
 export const environment = {
   production: false,
-  beaconRangingInterval: 30000, //ms
+  beaconRangingInterval: 10000, //ms
   beaconRangingTime: 5000, //ms
   beaconTimeoutAge: 0, //ms
   regions: [
     {
       name: 'TestRegion', //required
       uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D' //required
-    }],
+    },
+    {
+      name: 'TestRegion 1', //required
+      uuid: 'A22D8D96-4D06-D8C7-7AAD-7F4F433F6996' //required
+    },
+    {
+      name: 'TestRegion 2', //required
+      uuid: '9B0FB33A-583D-2614-5D19-AC4FB1A3D5FB' //required
+    },
+    {
+      name: 'TestRegion 3', //required
+      uuid: '18B77746-0AE4-852D-423A-8805A96CFBAF' //required
+    },
+  ],
   crowdApiUrl: 'https://crowd-api.westeurope.cloudapp.azure.com/crowd-positions',
   adalConfig: {
     tenant: 'sitaiot.onmicrosoft.com',

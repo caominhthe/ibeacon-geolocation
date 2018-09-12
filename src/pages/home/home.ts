@@ -7,6 +7,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-native/ms-adal';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { environment } from '../../enviroments/enviroment';
+import { Diagnostic } from '@ionic-native/diagnostic';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { GeneralProviderService } from "../../providers/general-provider.service";
 
 @IonicPage({
   name: 'home-page'
@@ -17,6 +20,10 @@ import { environment } from '../../enviroments/enviroment';
   templateUrl: 'home.html',
 })
 export class HomePage implements OnDestroy {
+
+  bluetoothAvaible: boolean;
+  networkAvaible = navigator.onLine;
+  geolocationAvaible = false;
 
   platformList: string = '';
   isApp: boolean = true;
@@ -31,12 +38,14 @@ export class HomePage implements OnDestroy {
   status: string;
 
   constructor(public nav: NavController,
+    public localNotifications: LocalNotifications,
     public platform: Platform,
-
+    public diagnostic: Diagnostic,
     public iBeacon: IBeacon,
     public msAdal: MSAdal,
     private backgroundMode: BackgroundMode,
     public http: HttpClient,
+    public generalProviderService: GeneralProviderService,
     public zone: NgZone
   ) {
     let platforms = this.platform.platforms();
@@ -53,6 +62,9 @@ export class HomePage implements OnDestroy {
       await this.bgGeo.start();
       this.status = 'Start';
       this.setupTaskRunner();
+      this.registerNetworkCheck();
+      this.registerBluetoothCheck();
+      this.checkAppStatus();
     });
   }
 
@@ -73,6 +85,7 @@ export class HomePage implements OnDestroy {
         await this.bgGeo.start();
         this.status = 'Start';
         await this.startRangingBeaconsInRegion();
+        this.checkAppStatus();
         setTimeout(async () => {
           console.log('Task stop');
           this.stopRangingBeaconsInRegion();
@@ -180,6 +193,14 @@ export class HomePage implements OnDestroy {
       let authResponse = await this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null);
       this.callCrowdAPI(authResponse.accessToken, beacon, currentLocation['coords']);
     } catch(e) {
+      console.log(JSON.stringify(e));
+      if (e.code == 'AD_ERROR_SERVER_USER_INPUT_NEEDED') {
+        this.generalProviderService.logOut();
+        clearInterval(this.taskRunner);
+        this.generalProviderService.showLogoutNoti()
+        this.nav.setRoot('login-page');
+      }
+      this.generalProviderService.generalErrorHandler();
       console.log(e);
     }
   }
@@ -205,16 +226,68 @@ export class HomePage implements OnDestroy {
         'minor': beacon['minor']
       }
     }
-    let data = await this.http.post(environment.crowdApiUrl, crowdInfo, httpOptions ).toPromise();
-    console.log('update beacon ', beacon['uuid']);
-    this.beaconArray = this.beaconArray.map((i) => {
-      if (i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor) {
-        let obj = JSON.parse(JSON.stringify(i));
-        obj.date = new Date();
-        return obj;
-      }
-      return i;
+    try {
+      let data = await this.http.post(environment.crowdApiUrl, crowdInfo, httpOptions ).toPromise();
+      console.log('update beacon ', beacon['uuid']);
+      this.beaconArray = this.beaconArray.map((i) => {
+        if (i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor) {
+          let obj = JSON.parse(JSON.stringify(i));
+          obj.date = new Date();
+          return obj;
+        }
+        return i;
+      });
+    } catch (e) {
+      this.generalProviderService.showLocationAuthorizationNoti();
+    }
+  }
+
+  checkBluetoothState() {
+    this.diagnostic.getBluetoothState()
+      .then((state) => {
+        if (state == this.diagnostic.bluetoothState.POWERED_ON){
+          this.bluetoothAvaible = true;
+        } else {
+          this.bluetoothAvaible = false;
+          this.generalProviderService.showBluetoothNoti();
+        }
+      });
+  }
+
+  registerNetworkCheck() {
+    window.addEventListener('online',  ()=>this.networkAvaible = true);
+    window.addEventListener('offline', ()=> {
+      this.networkAvaible = false;
     });
+  }
+  registerBluetoothCheck() {
+    this.diagnostic.registerBluetoothStateChangeHandler(() => {
+      this.checkBluetoothState();
+    });
+  }
+
+  checkLocationAuthorization() {
+    this.diagnostic.getLocationAuthorizationStatus()
+      .then((res: any) => {
+        if (res == 'authorized'){
+          this.geolocationAvaible = true;
+        } else {
+          this.geolocationAvaible = false;
+        }
+      });
+  }
+
+  checkAppStatus() {
+    this.checkLocationAuthorization();
+    this.checkBluetoothState();
+  }
+
+  logOut() {
+    this.backgroundMode.disable();
+    clearInterval(this.taskRunner);
+    setTimeout(() => {
+      this.nav.setRoot('login-page');
+    }, 100)
   }
 
   ngOnDestroy() {

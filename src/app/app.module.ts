@@ -14,6 +14,7 @@ import { LoginPageModule } from '../pages/login/login.module';
 import { HomePageModule } from '../pages/home/home.module';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { HeaderComponent } from "../shared/header.component";
+import { Crashlytics } from '@ionic-native/fabric';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { HeaderComponent } from "../shared/header.component";
     Keyboard,
     BackgroundMode,
     MSAdal,
+    Crashlytics,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

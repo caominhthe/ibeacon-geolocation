@@ -4,6 +4,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { IBeacon } from '@ionic-native/ibeacon';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { HeaderComponent } from "../../shared/header.component";
+import { Diagnostic } from '@ionic-native/diagnostic';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { GeneralProviderService } from "../../providers/general-provider.service";
 
 @NgModule({
   declarations: [
@@ -17,6 +20,9 @@ import { HeaderComponent } from "../../shared/header.component";
     HomePage
   ],providers: [
     IBeacon,
+    Diagnostic,
+    LocalNotifications,
+    GeneralProviderService,
     HttpClientModule
   ]
 })
