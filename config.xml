@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.siclomobile.sita" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.siclomobile.sita" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>SitaULD</name>
     <description>Ionic 3 Start Theme</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
@@ -90,6 +90,8 @@
     <allow-navigation href="http://192.168.10.24:8100" />
     <allow-navigation href="http://169.254.225.88:8100" />
     <allow-navigation href="http://169.254.3.28:8100" />
+    <allow-navigation href="http://169.254.234.182:8100" />
+    <allow-navigation href="http://169.254.248.111:8100" />
     <engine name="android" spec="^7.0.0" />
     <engine name="ios" spec="^4.5.5" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
@@ -113,10 +115,8 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
     <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
-    <allow-navigation href="http://169.254.234.182:8100" />
     <plugin name="cordova-fabric-plugin" spec="^1.1.14-dev">
         <variable name="FABRIC_API_KEY" value="70dedfde89b79b2a5456dc613a6ba5573684ff8c" />
         <variable name="FABRIC_API_SECRET" value="b1b255bb9a2da2337da86727309a5f7d67700b6d347947e8dbe525feb902c24d" />
     </plugin>
-    <allow-navigation href="http://169.254.248.111:8100" />
 </widget>

@@ -1,4 +1,9 @@
 page-home {
+  height: 100vh;
+  overflow: hidden;
+  .scroll-content {
+    overflow-y: hidden;
+  }
   .page-content {
     height: 100%;
     width: 100%;

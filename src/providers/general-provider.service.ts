@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import { LoginPage } from '../pages/login/login';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 
 @Injectable()
 export class GeneralProviderService {
@@ -11,6 +12,7 @@ export class GeneralProviderService {
   constructor(
     private msAdal: MSAdal,
     private http: HttpClient,
+    private alertCtrl: AlertController,
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
   ) {
@@ -31,10 +33,22 @@ export class GeneralProviderService {
     });
   }
 
+  public showWarning(msg) {
+    let alert = this.alertCtrl.create({
+      title: 'Warning',
+      message: msg,
+      buttons: [
+        {
+          text: 'Ok'
+        }],
+    });
+    alert.present();
+  }
+
   public showLocationAuthorizationNoti() {
     this.localNotifications.schedule({
       id: 2,
-      text: 'You must enable "Always" in the Location Services setting',
+      text: '',
       led: 'FF0000',
       sound: null
     });

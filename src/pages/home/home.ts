@@ -35,6 +35,9 @@ export class HomePage implements OnDestroy {
   authContext: any;
   taskRunner: any;
   beaconArray = [];
+  bluetoothWarningMsg = 'Please Enable Bluetooth for the application work correctly';
+  geolocationWarningMsg = 'You must enable "Always" in the Location Services setting';
+  networkWarningMsg = 'Please check your network connection';
   status: string;
 
   constructor(public nav: NavController,
