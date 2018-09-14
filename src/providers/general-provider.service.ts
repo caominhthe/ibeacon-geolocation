@@ -63,6 +63,15 @@ export class GeneralProviderService {
     });
   }
 
+  public showSleepNoti() {
+    this.localNotifications.schedule({
+      id: 99,
+      text: 'Please check your app. It may go to sleep',
+      led: 'FF0000',
+      sound: null
+    });
+  }
+
   public generalErrorHandler() {
     this.localNotifications.schedule({
       id: 4,

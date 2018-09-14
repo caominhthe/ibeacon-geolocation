@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  beaconRangingInterval: 10000, //ms
+  beaconRangingInterval: 30000, //ms
   beaconRangingTime: 5000, //ms
   beaconTimeoutAge: 0, //ms
   regions: [

@@ -22,13 +22,14 @@ app-header {
     height     : $header-height;
     background : $header-background-color;
     .logout {
-      width: 35px;
-      height: 35px;
+      width: 40px;
+      height: 40px;
       position: absolute;
       right: 0;
       z-index: 100;
       background: #ffffff;
       margin: 10px;
+      margin-top: 5px;
     }
     .logo {
       float  : left;
@@ -36,7 +37,7 @@ app-header {
       height : $header-height;
       img {
         max-width  : 110px;
-        max-height : 50px;
+        max-height : 110px;
         margin: 15px;
       }
     }

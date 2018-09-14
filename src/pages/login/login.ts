@@ -43,6 +43,6 @@ export class LoginPage {
       .then((authResponse: AuthenticationResult) => {
         this.nav.push('home-page');
       })
-      .catch((e: any) => console.log('Authentication failed'));
+      .catch((e: any) => console.log(JSON.stringify(e)));
   }
 }

@@ -5,8 +5,11 @@ page-login  {
 
   .container-wrapper {
     background-image : url('/assets/images/background.png');
-    background-size: cover;
     background-position: right;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    background-size:     cover;
+    width: 100%;
     .container {
         font-size       : 17px;
         background      : linear-gradient(to right, rgba(36, 47, 61, 1) 0%, rgba(36, 47, 61, 0.5) 100%, rgba(255, 255, 255, 1) 100%) 100% no-repeat;
@@ -17,7 +20,6 @@ page-login  {
         align-items     : center;
         position        : relative;
         .login-container {
-            max-width : 1180px;
             display: flex;
             justify-content: center;
             .login-left-side {
@@ -27,7 +29,7 @@ page-login  {
                     width         : 100%;
                     margin-bottom : 50px;
                     img {
-                        height : 80px;
+                        height : auto;
                     }
                 }
                 .description {
@@ -61,9 +63,6 @@ page-login  {
                 float          : right;
                 text-align     : center;
                 vertical-align : middle;
-                img {
-                    max-width : 80%;
-                }
             }
         }
     }

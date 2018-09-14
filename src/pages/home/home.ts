@@ -10,6 +10,7 @@ import { environment } from '../../enviroments/enviroment';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { GeneralProviderService } from "../../providers/general-provider.service";
+import { Observable } from "rxjs/Observable";
 
 @IonicPage({
   name: 'home-page'
@@ -69,6 +70,7 @@ export class HomePage implements OnDestroy {
       this.registerBluetoothCheck();
       this.checkAppStatus();
     });
+    window.addEventListener('pause',  ()=>console.log('sleep'));
   }
 
   async startRangingBeaconsInRegion() {
@@ -272,10 +274,11 @@ export class HomePage implements OnDestroy {
   checkLocationAuthorization() {
     this.diagnostic.getLocationAuthorizationStatus()
       .then((res: any) => {
-        if (res == 'authorized'){
+        if (res == 'authorized' || (this.platform.is('android') && res == 'GRANTED')) {
           this.geolocationAvaible = true;
         } else {
           this.geolocationAvaible = false;
+          this.generalProviderService.showLocationAuthorizationNoti();
         }
       });
   }

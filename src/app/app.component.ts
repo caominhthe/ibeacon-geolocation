@@ -53,5 +53,4 @@ export class MyApp {
     authContext.tokenCache.clear();
     this.nav.setRoot(LoginPage);
   }
-
 }
