@@ -3,7 +3,7 @@
     <name>SitaULD</name>
     <description>Ionic 3 Start Theme</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
-    <content original-src="index.html" src="http://169.254.128.77:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -113,6 +113,8 @@
     <allow-navigation href="http://169.254.61.141:8100" />
     <allow-navigation href="http://169.254.145.134:8100" />
     <allow-navigation href="http://169.254.128.77:8100" />
+    <allow-navigation href="http://169.254.215.1:8100" />
+    <allow-navigation href="http://169.254.238.237:8100" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
@@ -140,4 +142,5 @@
         <variable name="FABRIC_API_KEY" value="70dedfde89b79b2a5456dc613a6ba5573684ff8c" />
         <variable name="FABRIC_API_SECRET" value="b1b255bb9a2da2337da86727309a5f7d67700b6d347947e8dbe525feb902c24d" />
     </plugin>
+    <plugin name="cordova-plugin-battery-status" spec="^2.0.2" />
 </widget>

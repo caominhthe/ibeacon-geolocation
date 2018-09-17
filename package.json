@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "5.2.7",
     "@angular/router": "^6.1.4",
     "@ionic-native/background-mode": "^4.12.2",
+    "@ionic-native/battery-status": "^4.13.0",
     "@ionic-native/core": "^4.4.0",
     "@ionic-native/device": "^4.3.3",
     "@ionic-native/diagnostic": "^4.12.2",
@@ -42,6 +43,7 @@
     "cordova-plugin-background-fetch": "^5.4.1",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-badge": "^0.8.7",
+    "cordova-plugin-battery-status": "^2.0.2",
     "cordova-plugin-cocoalumberjack": "0.0.4",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-device": "^1.1.6",
@@ -95,7 +97,8 @@
       "cordova-fabric-plugin": {
         "FABRIC_API_KEY": "70dedfde89b79b2a5456dc613a6ba5573684ff8c",
         "FABRIC_API_SECRET": "b1b255bb9a2da2337da86727309a5f7d67700b6d347947e8dbe525feb902c24d"
-      }
+      },
+      "cordova-plugin-battery-status": {}
     },
     "platforms": [
       "ios",

@@ -11,6 +11,8 @@ import { environment } from "../enviroments/enviroment";
 export class GeneralProviderService {
 
   authContext: any;
+  settings = null;
+
   constructor(
     private msAdal: MSAdal,
     private http: HttpClient,
@@ -38,12 +40,14 @@ export class GeneralProviderService {
 
   public async makePost(url, data) {
     const httpOptions = await this.prepareHeader();
-    return await this.http.post(url, data, httpOptions ).toPromise();
+    const result = await this.http.post(url, data, httpOptions ).toPromise();
+    return result;
   }
 
   public async makeGet(url) {
     const httpOptions = await this.prepareHeader();
-    return await this.http.get(url, httpOptions).toPromise();
+    const result = await this.http.get(url, httpOptions).toPromise();
+    return result;
   }
 
   public async prepareHeader(){
@@ -56,13 +60,26 @@ export class GeneralProviderService {
     };
   }
 
-  public async getNewSettings() {
+  public async updateNewSettings() {
     try {
-      this.makeGet('https://uld-crowd.sita.siclo-mobile.com/settings').then((settings) => {
-        console.log(JSON.stringify(settings));
-      });
+      const settings = await this.makeGet('https://uld-crowd.sita.siclo-mobile.com/settings');
+      if (!!settings) {
+        this.settings = settings;
+      }
     } catch(e) {
-      console.log('Error ',JSON.stringify(e));
+      console.log('Error update setting ',JSON.stringify(e));
+    }
+  }
+
+  public getSetting(key){
+    try {
+      if (this.settings === null) {
+        this.updateNewSettings();
+      }
+      const setting = !!this.settings[key] ? this.settings[key] : environment[key]
+      return setting;
+    } catch (e) {
+      console.log(e);
     }
   }
 

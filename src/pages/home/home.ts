@@ -6,7 +6,6 @@ import { Events } from 'ionic-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-native/ms-adal';
 import { BackgroundMode } from '@ionic-native/background-mode';
-import { environment } from '../../enviroments/enviroment';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { GeneralProviderService } from "../../providers/general-provider.service";
@@ -52,14 +51,14 @@ export class HomePage implements OnDestroy {
     public generalProviderService: GeneralProviderService,
     public zone: NgZone
   ) {
-    this.generalProviderService.getNewSettings();
     let platforms = this.platform.platforms();
     this.backgroundMode.enable();
 
     this.platformList = platforms.join(', ');
 
     this.platform.ready().then(async () => {
-      this.authContext = this.msAdal.createAuthenticationContext(environment.adalConfig.authenticationContext);
+      await this.generalProviderService.updateNewSettings();
+      this.authContext = this.msAdal.createAuthenticationContext(this.generalProviderService.getSetting('adalConfig')['authenticationContext']);
       await this.initialise();
       this.iBeacon.enableBluetooth();
       await this.configureBackgroundGeolocation();
@@ -71,7 +70,6 @@ export class HomePage implements OnDestroy {
       this.registerBluetoothCheck();
       this.checkAppStatus();
     });
-    window.addEventListener('pause',  ()=>console.log('sleep'));
   }
 
   async startRangingBeaconsInRegion() {
@@ -87,7 +85,6 @@ export class HomePage implements OnDestroy {
   setupTaskRunner() {
     this.taskRunner = setInterval(async() => {
       try {
-        this.generalProviderService.getNewSettings();
         console.log('Task start');
         await this.bgGeo.start();
         this.status = 'Start';
@@ -96,18 +93,21 @@ export class HomePage implements OnDestroy {
         setTimeout(async () => {
           console.log('Task stop');
           this.stopRangingBeaconsInRegion();
+          const start = new Date().getTime();
           let currentLocation = await this.bgGeo.getCurrentPosition();
+          const end = new Date().getTime();
+          console.log('Time ',end - start)
           for (let beacon of this.beaconArray) {
             await this.postCrowdPostion(beacon, currentLocation);
           };
           this.beaconArray = [];
           this.bgGeo.stop();
           this.status = 'Stop';
-        }, environment.beaconRangingTime)
+        }, this.generalProviderService.getSetting('scan_time_in_s')*1000)
       } catch (e) {
         console.log('Error ranging beacon');
       }
-    }, environment.beaconRangingInterval)
+    }, this.generalProviderService.getSetting('scan_period_in_s')*1000)
   }
 
   initialise(): any {
@@ -116,9 +116,9 @@ export class HomePage implements OnDestroy {
 
         this.iBeacon.requestAlwaysAuthorization();
 
-        const regions = environment.regions;
+        const regions = this.generalProviderService.getSetting('beacon_proximity_uuids');
         regions.forEach((r) => {
-          this.regions.push(this.iBeacon.BeaconRegion(r.name, r.uuid))
+          this.regions.push(this.iBeacon.BeaconRegion('name', r))
         });
 
         this.delegate = this.iBeacon.Delegate();
@@ -127,8 +127,10 @@ export class HomePage implements OnDestroy {
           this.delegate.didRangeBeaconsInRegion()
             .subscribe(
               data => {
+                console.log('Data ', JSON.stringify(data));
                 this.counting++;
                 this.zone.run(() => {
+
                   let beaconList = data.beacons;
                   beaconList.forEach((beacon) => {
                     const idx = this.beaconArray.findIndex(i => i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor);
@@ -188,7 +190,7 @@ export class HomePage implements OnDestroy {
       const now = new Date();
 
       // Not update location of Uld that get updated in last 5 mins
-      if (!!currentBeacon && currentBeacon.date && ((<any>now - currentBeacon.date) < environment.beaconTimeoutAge) ) {
+      if (!!currentBeacon && currentBeacon.date && ((<any>now - currentBeacon.date) < this.generalProviderService.getSetting('beaconTimeoutAge')) ) {
         return;
       }
 
@@ -197,7 +199,7 @@ export class HomePage implements OnDestroy {
         this.beaconArray.push(beacon);
       }
 
-      let authResponse = await this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null);
+      let authResponse = await this.authContext.acquireTokenSilentAsync('https://graph.windows.net', this.generalProviderService.getSetting('adalConfig')['clientId'], null);
       this.callCrowdAPI(authResponse.accessToken, beacon, currentLocation['coords']);
     } catch(e) {
       console.log(JSON.stringify(e));
@@ -228,7 +230,7 @@ export class HomePage implements OnDestroy {
       }
     }
     try {
-      let data = await this.generalProviderService.makePost(environment.crowdApiUrl, crowdInfo);
+      let data = await this.generalProviderService.makePost(this.generalProviderService.getSetting('crowdApiUrl'), crowdInfo);
       console.log('update beacon ', beacon['uuid']);
       this.beaconArray = this.beaconArray.map((i) => {
         if (i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor) {
