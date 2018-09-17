@@ -52,6 +52,7 @@ export class HomePage implements OnDestroy {
     public generalProviderService: GeneralProviderService,
     public zone: NgZone
   ) {
+    this.generalProviderService.getNewSettings();
     let platforms = this.platform.platforms();
     this.backgroundMode.enable();
 
@@ -86,6 +87,7 @@ export class HomePage implements OnDestroy {
   setupTaskRunner() {
     this.taskRunner = setInterval(async() => {
       try {
+        this.generalProviderService.getNewSettings();
         console.log('Task start');
         await this.bgGeo.start();
         this.status = 'Start';
@@ -94,8 +96,8 @@ export class HomePage implements OnDestroy {
         setTimeout(async () => {
           console.log('Task stop');
           this.stopRangingBeaconsInRegion();
+          let currentLocation = await this.bgGeo.getCurrentPosition();
           for (let beacon of this.beaconArray) {
-            let currentLocation = await this.bgGeo.getCurrentPosition();
             await this.postCrowdPostion(beacon, currentLocation);
           };
           this.beaconArray = [];
@@ -211,12 +213,6 @@ export class HomePage implements OnDestroy {
   }
 
   async callCrowdAPI(accessToken, beacon, coords) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + accessToken
-      })
-    };
     let crowdInfo = {
       'latitude': coords['latitude'],
       'longitude': coords['longitude'],
@@ -232,7 +228,7 @@ export class HomePage implements OnDestroy {
       }
     }
     try {
-      let data = await this.http.post(environment.crowdApiUrl, crowdInfo, httpOptions ).toPromise();
+      let data = await this.generalProviderService.makePost(environment.crowdApiUrl, crowdInfo);
       console.log('update beacon ', beacon['uuid']);
       this.beaconArray = this.beaconArray.map((i) => {
         if (i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor) {

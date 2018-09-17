@@ -3,7 +3,7 @@
     <name>SitaULD</name>
     <description>Ionic 3 Start Theme</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://169.254.128.77:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -111,6 +111,8 @@
     <allow-navigation href="http://169.254.24.97:8100" />
     <allow-navigation href="http://169.254.24.97:8101" />
     <allow-navigation href="http://169.254.61.141:8100" />
+    <allow-navigation href="http://169.254.145.134:8100" />
+    <allow-navigation href="http://169.254.128.77:8100" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />

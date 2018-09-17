@@ -1,14 +1,16 @@
 import {Injectable} from '@angular/core';
 import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-native/ms-adal';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoginPage } from '../pages/login/login';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { environment } from "../enviroments/enviroment";
 
 @Injectable()
 export class GeneralProviderService {
 
+  authContext: any;
   constructor(
     private msAdal: MSAdal,
     private http: HttpClient,
@@ -16,6 +18,7 @@ export class GeneralProviderService {
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
   ) {
+    this.authContext = this.msAdal.createAuthenticationContext(environment.adalConfig.authenticationContext);
   }
 
   public logOut() {
@@ -31,6 +34,36 @@ export class GeneralProviderService {
       led: 'FF0000',
       sound: null
     });
+  }
+
+  public async makePost(url, data) {
+    const httpOptions = await this.prepareHeader();
+    return await this.http.post(url, data, httpOptions ).toPromise();
+  }
+
+  public async makeGet(url) {
+    const httpOptions = await this.prepareHeader();
+    return await this.http.get(url, httpOptions).toPromise();
+  }
+
+  public async prepareHeader(){
+    let authResponse = await this.authContext.acquireTokenSilentAsync('https://graph.windows.net', environment.adalConfig.clientId, null);
+    return {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + authResponse.accessToken
+      })
+    };
+  }
+
+  public async getNewSettings() {
+    try {
+      this.makeGet('https://uld-crowd.sita.siclo-mobile.com/settings').then((settings) => {
+        console.log(JSON.stringify(settings));
+      });
+    } catch(e) {
+      console.log('Error ',JSON.stringify(e));
+    }
   }
 
   public showWarning(msg) {
