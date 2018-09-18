@@ -35,6 +35,7 @@ export class HomePage implements OnDestroy {
   counting = 0;
   authContext: any;
   taskRunner: any;
+  permissionCheckRunner: any;
   batterySubscription: any;
   beaconArray = [];
   tempBeaconSignalList = [];
@@ -71,10 +72,17 @@ export class HomePage implements OnDestroy {
       await this.bgGeo.start();
       this.status = 'Start';
       this.setupTaskRunner();
+      this.setupPermissionCheckRunner();
       this.registerNetworkCheck();
       this.registerBluetoothCheck();
       this.checkAppStatus();
     });
+  }
+
+  setupPermissionCheckRunner() {
+    this.permissionCheckRunner = setInterval(()=>{
+      this.checkAppStatus();
+    }, 5000)
   }
 
   async startRangingBeaconsInRegion() {
@@ -94,7 +102,6 @@ export class HomePage implements OnDestroy {
         await this.bgGeo.start();
         this.status = 'Start';
         await this.startRangingBeaconsInRegion();
-        this.checkAppStatus();
         setTimeout(async () => {
           console.log('Task stop');
           this.stopRangingBeaconsInRegion();
@@ -204,6 +211,7 @@ export class HomePage implements OnDestroy {
       if (e.code == 'AD_ERROR_SERVER_USER_INPUT_NEEDED') {
         this.generalProviderService.logOut();
         clearInterval(this.taskRunner);
+        clearInterval(this.permissionCheckRunner);
         this.generalProviderService.showLogoutNoti()
         this.nav.setRoot('login-page');
       }
@@ -304,6 +312,7 @@ export class HomePage implements OnDestroy {
   logOut() {
     this.backgroundMode.disable();
     clearInterval(this.taskRunner);
+    clearInterval(this.permissionCheckRunner);
     setTimeout(() => {
       this.nav.setRoot('login-page');
     }, 100)
@@ -349,6 +358,7 @@ export class HomePage implements OnDestroy {
 
   ngOnDestroy() {
     clearInterval(this.taskRunner);
+    clearInterval(this.permissionCheckRunner);
     this.generalProviderService.showSleepNoti();
   }
 }
