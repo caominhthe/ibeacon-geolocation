@@ -28,6 +28,7 @@ export const environment = {
     },
   ],
   crowdApiUrl: 'https://crowd-api.westeurope.cloudapp.azure.com/crowd-positions',
+  apiUrl: 'https://crowd-api.westeurope.cloudapp.azure.com',
   adalConfig: {
     tenant: 'sitaiot.onmicrosoft.com',
     authenticationContext: 'https://login.microsoftonline.com/sitaiot.onmicrosoft.com',

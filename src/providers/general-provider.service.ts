@@ -67,7 +67,7 @@ export class GeneralProviderService {
 
   public async updateNewSettings() {
     try {
-      const settings = await this.makeGet('https://uld-crowd.sita.siclo-mobile.com/settings');
+      const settings = await this.makeGet(environment.apiUrl + '/settings');
       if (!!settings) {
         this.settings = settings;
       }

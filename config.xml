@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.siclomobile.sita" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>SitaULD</name>
-    <description>Ionic 3 Start Theme</description>
+<widget id="aero.sita.uldtrackr" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>ULD Trackr</name>
+    <description>Uld Tracker</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
     <content src="index.html" />
     <access origin="*" />
@@ -57,6 +57,7 @@
         <icon height="58" src="resources/ios/icon/icon-small@2x.png" width="58" />
         <icon height="87" src="resources/ios/icon/icon-small@3x.png" width="87" />
         <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024" />
+        <hook src="scripts/iosAfterBuild.js" type="after_build" />
     </platform>
     <allow-navigation href="http://169.254.103.113:8100" />
     <allow-navigation href="http://169.254.126.13:8100" />
@@ -115,6 +116,13 @@
     <allow-navigation href="http://169.254.128.77:8100" />
     <allow-navigation href="http://169.254.215.1:8100" />
     <allow-navigation href="http://169.254.238.237:8100" />
+    <allow-navigation href="http://192.168.1.125:8101" />
+    <allow-navigation href="http://169.254.215.165:8101" />
+    <allow-navigation href="http://169.254.237.158:8100" />
+    <allow-navigation href="http://169.254.129.173:8100" />
+    <allow-navigation href="http://169.254.160.114:8100" />
+    <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
@@ -141,8 +149,4 @@
         <variable name="FABRIC_API_SECRET" value="b1b255bb9a2da2337da86727309a5f7d67700b6d347947e8dbe525feb902c24d" />
     </plugin>
     <plugin name="cordova-plugin-battery-status" spec="^2.0.2" />
-    <allow-navigation href="http://192.168.1.125:8101" />
-    <allow-navigation href="http://169.254.215.165:8101" />
-    <engine name="ios" spec="^4.5.5" />
-    <engine name="android" spec="^7.0.0" />
 </widget>
