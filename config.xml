@@ -104,7 +104,7 @@
         <variable name="FABRIC_API_KEY" value="70dedfde89b79b2a5456dc613a6ba5573684ff8c" />
         <variable name="FABRIC_API_SECRET" value="b1b255bb9a2da2337da86727309a5f7d67700b6d347947e8dbe525feb902c24d" />
     </plugin>
+    <plugin name="cordova-plugin-battery-status" spec="^2.0.2" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.1.1" />
-    <plugin name="cordova-plugin-battery-status" spec="^2.0.2" />
 </widget>

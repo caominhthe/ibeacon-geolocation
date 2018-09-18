@@ -4,10 +4,7 @@
 fastlane_version "2.104.0"
 default_platform :ios
 
-ENV['app_identifier'] = 'aero.sita.uld-beacon-prototype'
-ENV['app_name_sanitized'] = 'SitaULD'
 ENV['ipa_name'] = "#{ENV['app_name_sanitized']}.ipa"
-ENV['ios_team_id'] = '5Z4HN8AW3H'
 
 lane :clean do
 	sh "cd .. && rm -rf node_modules && rm -rf platforms/ios && rm -rf platforms/android && rm -rf plugins"
