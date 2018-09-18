@@ -6,6 +6,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { environment } from "../enviroments/enviroment";
+import { BatteryStatus } from "@ionic-native/battery-status";
 
 @Injectable()
 export class GeneralProviderService {
@@ -18,9 +19,13 @@ export class GeneralProviderService {
     private http: HttpClient,
     private alertCtrl: AlertController,
     private backgroundMode: BackgroundMode,
+    public batteryStatus: BatteryStatus,
     private localNotifications: LocalNotifications,
   ) {
     this.authContext = this.msAdal.createAuthenticationContext(environment.adalConfig.authenticationContext);
+    this.batteryStatus.onChange().subscribe(status => {
+      console.log(status.level, status.isPlugged);
+    });
   }
 
   public logOut() {

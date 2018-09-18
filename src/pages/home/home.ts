@@ -8,8 +8,9 @@ import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-nati
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { LocalNotifications } from '@ionic-native/local-notifications';
-import { GeneralProviderService } from "../../providers/general-provider.service";
-import { Observable } from "rxjs/Observable";
+import { GeneralProviderService } from '../../providers/general-provider.service';
+import { Observable } from 'rxjs/Observable';
+import { BatteryStatus } from '@ionic-native/battery-status';
 
 @IonicPage({
   name: 'home-page'
@@ -34,6 +35,7 @@ export class HomePage implements OnDestroy {
   counting = 0;
   authContext: any;
   taskRunner: any;
+  batterySubscription: any;
   beaconArray = [];
   bluetoothWarningMsg = 'Please Enable Bluetooth for the application work correctly';
   geolocationWarningMsg = 'You must enable "Always" in the Location Services setting';
@@ -49,6 +51,7 @@ export class HomePage implements OnDestroy {
     private backgroundMode: BackgroundMode,
     public http: HttpClient,
     public generalProviderService: GeneralProviderService,
+    public batteryStatus: BatteryStatus,
     public zone: NgZone
   ) {
     let platforms = this.platform.platforms();
@@ -96,9 +99,12 @@ export class HomePage implements OnDestroy {
           const start = new Date().getTime();
           let currentLocation = await this.bgGeo.getCurrentPosition();
           const end = new Date().getTime();
-          console.log('Time ',end - start)
+          const time = end - start;
+          this.batteryStatus.onChange().subscribe(status => {
+           console.log(status.level, status.isPlugged);
+          });
           for (let beacon of this.beaconArray) {
-            await this.postCrowdPostion(beacon, currentLocation);
+            await this.postCrowdPostion(beacon, currentLocation, time);
           };
           this.beaconArray = [];
           this.bgGeo.stop();
@@ -127,8 +133,6 @@ export class HomePage implements OnDestroy {
           this.delegate.didRangeBeaconsInRegion()
             .subscribe(
               data => {
-                console.log('Data ', JSON.stringify(data));
-                this.counting++;
                 this.zone.run(() => {
 
                   let beaconList = data.beacons;
@@ -184,7 +188,7 @@ export class HomePage implements OnDestroy {
     });
   }
 
-  async postCrowdPostion(beacon, currentLocation) {
+  async postCrowdPostion(beacon, currentLocation, duration) {
     try {
       let currentBeacon = this.beaconArray.find((i) => i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor);
       const now = new Date();
@@ -200,7 +204,7 @@ export class HomePage implements OnDestroy {
       }
 
       let authResponse = await this.authContext.acquireTokenSilentAsync('https://graph.windows.net', this.generalProviderService.getSetting('adalConfig')['clientId'], null);
-      this.callCrowdAPI(authResponse.accessToken, beacon, currentLocation['coords']);
+      this.callCrowdAPI(authResponse.accessToken, beacon, currentLocation['coords'], duration);
     } catch(e) {
       console.log(JSON.stringify(e));
       if (e.code == 'AD_ERROR_SERVER_USER_INPUT_NEEDED') {
@@ -214,13 +218,14 @@ export class HomePage implements OnDestroy {
     }
   }
 
-  async callCrowdAPI(accessToken, beacon, coords) {
+  async callCrowdAPI(accessToken, beacon, coords, duration) {
     let crowdInfo = {
       'latitude': coords['latitude'],
       'longitude': coords['longitude'],
       'speed': coords['speed'],
       'accuracy': coords['accuracy'],
       'heading': coords['heading'],
+      'duration': duration,
       'date': (new Date()).toISOString(),
       'beacon': {
         'proximityUUID': beacon['uuid'],
