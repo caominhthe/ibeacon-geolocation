@@ -56,7 +56,7 @@
         <splash height="2048" src="resources/ios/splash/Default-Landscape@~ipadpro.png" width="2732" />
         <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
-        <hook src="scripts/iosAfterBuild.js" type="after_build" />
+        <hook src="scripts/iosAfterBuild.js" type="before_build" />
     </platform>
     <platform name="android">
         <preference name="loadUrlTimeoutValue" value="700000" />
