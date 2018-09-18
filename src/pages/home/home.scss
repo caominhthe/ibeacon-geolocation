@@ -1,3 +1,4 @@
+
 page-home {
   height: 100vh;
   overflow: hidden;
@@ -45,6 +46,22 @@ page-home {
               display: inline;
             }
           }
+        }
+      }
+      .scanning {
+        position: absolute;
+        width: 100%;
+        bottom: 30px;
+        display: flex;
+        justify-content: center;
+        ion-spinner * {
+          fill: #ffffff;
+          stroke: #ffffff;
+          height:34px;
+        }
+        span {
+          display: inline-block;
+          margin-bottom: 10px;
         }
       }
     }

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.siclomobile.sita" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>SitaULD</name>
-    <description>Ionic 3 Start Theme</description>
+<widget id="aero.sita.uldtrackr" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>ULD Trackr</name>
+    <description>Uld Tracker</description>
     <author email="firminoata@gmail.com" href="https://ionictheme.com">Ionic Theme</author>
     <content src="index.html" />
     <access origin="*" />
@@ -56,6 +56,7 @@
         <splash height="2048" src="resources/ios/splash/Default-Landscape@~ipadpro.png" width="2732" />
         <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
+        <hook src="scripts/iosAfterBuild.js" type="after_build" />
     </platform>
     <platform name="android">
         <preference name="loadUrlTimeoutValue" value="700000" />
@@ -105,4 +106,5 @@
     </plugin>
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.1.1" />
+    <plugin name="cordova-plugin-battery-status" spec="^2.0.2" />
 </widget>

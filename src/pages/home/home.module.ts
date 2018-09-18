@@ -7,6 +7,7 @@ import { HeaderComponent } from "../../shared/header.component";
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { GeneralProviderService } from "../../providers/general-provider.service";
+import { BatteryStatus } from '@ionic-native/battery-status';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { GeneralProviderService } from "../../providers/general-provider.service
     Diagnostic,
     LocalNotifications,
     GeneralProviderService,
+    BatteryStatus,
     HttpClientModule
   ]
 })

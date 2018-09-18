@@ -4,10 +4,12 @@
 
 export const environment = {
   production: false,
-  beaconRangingInterval: 30000, //ms
-  beaconRangingTime: 5000, //ms
-  beaconTimeoutAge: 0, //ms
-  regions: [
+  rssi_selection_mode: 'BEST',
+  distance_move_max_in_m: 50,
+  scan_period_in_s: 30000, //ms
+  scan_time_in_s: 5000, //ms
+  scan_ignore_same_beacon_time_in_s: 0, //ms
+  beacon_proximity_uuids: [
     {
       name: 'TestRegion', //required
       uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D' //required
@@ -26,6 +28,7 @@ export const environment = {
     },
   ],
   crowdApiUrl: 'https://crowd-api.westeurope.cloudapp.azure.com/crowd-positions',
+  apiUrl: 'https://crowd-api.westeurope.cloudapp.azure.com',
   adalConfig: {
     tenant: 'sitaiot.onmicrosoft.com',
     authenticationContext: 'https://login.microsoftonline.com/sitaiot.onmicrosoft.com',
