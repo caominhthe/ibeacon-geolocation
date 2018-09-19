@@ -1,0 +1,45 @@
+$header-background-color : #ffffff;
+$header-height : 50px;
+
+app-header {
+
+  z-index: 1;
+  height: $header-height;
+  .clearfix {
+    clear : both;
+  }
+
+  .main-header {
+    .shadow-box {
+      width: 100%;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.19), 0 4px 4px rgba(0,0,0,0.1);
+      position: absolute;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    height     : $header-height;
+    background : $header-background-color;
+    .logout {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      right: 0;
+      z-index: 100;
+      background: #ffffff;
+      margin: 10px;
+      margin-top: 5px;
+    }
+    .logo {
+      float  : left;
+      width  : auto;
+      height : $header-height;
+      img {
+        max-width  : 110px;
+        max-height : 110px;
+        margin: 15px;
+      }
+    }
+  }
+}

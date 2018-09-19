@@ -1,0 +1,71 @@
+page-login  {
+  .scroll-content {
+    padding: 0 !important;
+  }
+
+  .container-wrapper {
+    background-image : url('/assets/images/background.png');
+    background-position: right;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    background-size:     cover;
+    width: 100%;
+    .container {
+        font-size       : 17px;
+        background      : linear-gradient(to right, rgba(36, 47, 61, 1) 0%, rgba(36, 47, 61, 0.5) 100%, rgba(255, 255, 255, 1) 100%) 100% no-repeat;
+        height          : 100vh;
+        color           : #ffffff;
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        position        : relative;
+        .login-container {
+            display: flex;
+            justify-content: center;
+            .login-left-side {
+                width : 50%;
+                float : left;
+                .logo {
+                    width         : 100%;
+                    margin-bottom : 50px;
+                    img {
+                        height : auto;
+                    }
+                }
+                .description {
+                    margin-bottom : 50px;
+                }
+                .input-group {
+                    position : relative;
+                    text-align: center;
+                    .login-btn {
+                        background-color : #00b99b;
+                        border-radius    : 3px;
+                        padding          : 9px 53px;
+                        color            : #ffffff;
+                        font-size        : 17px;
+                    }
+                    span {
+                        display : block;
+                    }
+                    input {
+                        width            : 14vw;
+                        height           : 4vh;
+                        border-radius    : 3px;
+                        background-color : #e7e7e7;
+                        border           : 1px solid #e7e7e7;
+                        margin-bottom    : 6vh;
+                    }
+                }
+            }
+            .login-right-side {
+                width          : 50%;
+                float          : right;
+                text-align     : center;
+                vertical-align : middle;
+            }
+        }
+    }
+
+}
+}

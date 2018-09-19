@@ -1,0 +1,69 @@
+
+page-home {
+  height: 100vh;
+  overflow: hidden;
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .page-content {
+    height: 100%;
+    width: 100%;
+    background-color:#212A35 ;
+    .permission-group {
+      padding: 15vh 0;
+      text-align: center;
+      color: #ffffff;
+      font-size: 20px;
+      hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #ffffff;
+        margin: 30px 2em;
+      }
+      .permission {
+        padding: 23px 20px;
+        span {
+          width: 200px;
+          height: 35px;
+          background: #707070;
+          border-radius: 4px;
+          display: inline-block;
+          line-height: 35px;
+          svg {
+            display: none;
+            fill: #0FAF90;
+            width: 20px;
+            height: 24px;
+            position: fixed;
+            margin-left: 5px;
+          }
+          &.active {
+            color: #0FAF90;
+            background: none;
+            svg {
+              position: relative;
+              display: inline;
+            }
+          }
+        }
+      }
+      .scanning {
+        position: absolute;
+        width: 100%;
+        bottom: 30px;
+        display: flex;
+        justify-content: center;
+        ion-spinner * {
+          fill: #ffffff;
+          stroke: #ffffff;
+          height:34px;
+        }
+        span {
+          display: inline-block;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}

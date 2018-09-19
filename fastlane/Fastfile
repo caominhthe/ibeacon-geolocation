@@ -1,0 +1,75 @@
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+fastlane_version "2.104.0"
+default_platform :ios
+
+ENV['ipa_name'] = "#{ENV['app_name_sanitized']}.ipa"
+
+lane :clean do
+	sh "cd .. && rm -rf node_modules && rm -rf platforms/ios && rm -rf platforms/android && rm -rf plugins"
+end
+
+lane :prepare do
+	# Yes, prepare is in there twice, I've seen where it will only install 1 os when you run prepare
+	# but running it again will add the other. This is a safe operation so if it does add both the
+	# second run will not hurt anything
+	sh "cd .. && npm install"
+	sh "cd .. && mkdir -p www && cordova prepare && cordova prepare"
+end
+
+platform :ios do
+	before_all do
+		ENV['ios_path'] = 'platforms/ios/'
+		ENV['ios_project_path'] = "#{ENV['ios_path']}#{ENV['app_name_sanitized']}.xcodeproj"
+		ENV['ios_workspace_path'] = "#{ENV['ios_path']}#{ENV['app_name_sanitized']}.xcworkspace"
+	end
+
+	desc "Submit a new Beta Build to Fabric"
+	lane :beta do
+
+		prepare
+
+		ionic(
+    		platform: 'ios',
+    		team_id: ENV['ios_team_id'],
+    		prod: false,
+    		release: true,
+    		type: 'enterprise',
+  	)
+
+  	update_app_identifier(
+			xcodeproj: ENV['ios_project_path'],
+			plist_path: "#{ENV['app_name_sanitized']}/#{ENV['app_name_sanitized']}-Info.plist",
+      app_identifier: ENV['app_identifier'],
+    )
+
+		update_project_provisioning(
+			xcodeproj: ENV['ios_project_path'],
+			profile: ENV['profile_path'],
+			build_configuration: "Release"
+		)
+
+    unlock_keychain(path: 'login.keychain', password: ENV['KEYCHAIN_PASSWORD'])
+
+		gym(
+		  export_options: {
+        method: "enterprise",
+        provisioningProfiles: {
+          ENV['app_identifier'] => ENV['profile_name']
+        }
+      },
+			workspace: ENV['ios_workspace_path'],
+    	configuration: "InHouse",
+   		export_method: "enterprise",
+    	scheme: ENV['app_name_sanitized'],
+    	silent: true,
+    	clean: true,
+    	output_directory: "platforms/ios/build",
+    	output_name: ENV['ipa_name'],
+    	export_team_id: ENV['ios_team_id'],
+    )
+
+	end
+
+end

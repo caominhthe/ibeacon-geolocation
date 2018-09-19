@@ -1,0 +1,23 @@
+<ion-content>
+  <app-header (logout)="logOut()"></app-header>
+  <div class="page-content">
+    <div class="permission-group">
+      <span>Activate the following <br> permission in your phone</span>
+      <hr>
+      <div  class="permission">
+        <span [class.active]="geolocationAvaible" (click)="geolocationAvaible? null : generalProviderService.showWarning(geolocationWarningMsg)">Geolocation <svg viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg></span>
+      </div>
+      <div class="permission">
+        <span [class.active]="bluetoothAvaible"  (click)="bluetoothAvaible? null : generalProviderService.showWarning(bluetoothWarningMsg)">Bluetooth <svg viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg></span>
+      </div>
+      <div class="permission">
+        <span [class.active]="networkAvaible"  (click)="networkAvaible? null : generalProviderService.showWarning(networkWarningMsg)">Network <svg viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg></span>
+      </div>
+      <div class="scanning" *ngIf="geolocationAvaible && bluetoothAvaible && networkAvaible">
+        <span> Scanning</span><ion-spinner name="dots"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+
