@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, AlertController, ToastController, MenuController} from 'ionic-angular';
-import {HomePage} from '../home/home';
+import {NavController} from 'ionic-angular';
 import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-native/ms-adal';
 import { environment } from '../../enviroments/enviroment';
 import { IonicPage, Platform } from "ionic-angular";

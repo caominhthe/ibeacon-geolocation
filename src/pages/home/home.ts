@@ -1,16 +1,13 @@
-import { Component, NgZone, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-import { IBeacon } from '@ionic-native/ibeacon';
-import { debounceTime } from 'rxjs/operators';
-import { Events } from 'ionic-angular';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-native/ms-adal';
-import { BackgroundMode } from '@ionic-native/background-mode';
-import { Diagnostic } from '@ionic-native/diagnostic';
-import { LocalNotifications } from '@ionic-native/local-notifications';
-import { GeneralProviderService } from '../../providers/general-provider.service';
-import { Observable } from 'rxjs/Observable';
-import { BatteryStatus } from '@ionic-native/battery-status';
+import {Component, NgZone, OnDestroy} from '@angular/core';
+import {IonicPage, NavController, Platform} from 'ionic-angular';
+import {IBeacon} from '@ionic-native/ibeacon';
+import {HttpClient} from '@angular/common/http';
+import {MSAdal} from '@ionic-native/ms-adal';
+import {BackgroundMode} from '@ionic-native/background-mode';
+import {Diagnostic} from '@ionic-native/diagnostic';
+import {LocalNotifications} from '@ionic-native/local-notifications';
+import {GeneralProviderService} from '../../providers/general-provider.service';
+import {BatteryStatus} from '@ionic-native/battery-status';
 
 @IonicPage({
   name: 'home-page'
@@ -28,7 +25,7 @@ export class HomePage implements OnDestroy {
 
   platformList: string = '';
   isApp: boolean = true;
-  delegate : any;
+  delegate: any;
   regions = [];
   beacons: any;
   bgGeo: any;
@@ -40,22 +37,22 @@ export class HomePage implements OnDestroy {
   beaconArray = [];
   tempBeaconSignalList = [];
   batteryPercentage: any;
-  bluetoothWarningMsg = 'Please Enable Bluetooth for the application work correctly';
-  geolocationWarningMsg = 'You must enable "Always" in the Location Services setting';
+  bluetoothWarningMsg = 'Please Enable Bluetooth for the application to work correctly';
+  geolocationWarningMsg = 'You must enable "Always" in the Location Services settings';
   networkWarningMsg = 'Please check your network connection';
   status: string;
 
   constructor(public nav: NavController,
-    public localNotifications: LocalNotifications,
-    public platform: Platform,
-    public diagnostic: Diagnostic,
-    public iBeacon: IBeacon,
-    public msAdal: MSAdal,
-    private backgroundMode: BackgroundMode,
-    public http: HttpClient,
-    public generalProviderService: GeneralProviderService,
-    public batteryStatus: BatteryStatus,
-    public zone: NgZone
+              public localNotifications: LocalNotifications,
+              public platform: Platform,
+              public diagnostic: Diagnostic,
+              public iBeacon: IBeacon,
+              public msAdal: MSAdal,
+              private backgroundMode: BackgroundMode,
+              public http: HttpClient,
+              public generalProviderService: GeneralProviderService,
+              public batteryStatus: BatteryStatus,
+              public zone: NgZone
   ) {
     let platforms = this.platform.platforms();
     this.backgroundMode.enable();
@@ -80,7 +77,7 @@ export class HomePage implements OnDestroy {
   }
 
   setupPermissionCheckRunner() {
-    this.permissionCheckRunner = setInterval(()=>{
+    this.permissionCheckRunner = setInterval(() => {
       this.checkAppStatus();
     }, 5000)
   }
@@ -96,7 +93,7 @@ export class HomePage implements OnDestroy {
   }
 
   setupTaskRunner() {
-    this.taskRunner = setInterval(async() => {
+    this.taskRunner = setInterval(async () => {
       try {
         console.log('Task start');
         await this.bgGeo.start();
@@ -108,21 +105,22 @@ export class HomePage implements OnDestroy {
           const start = new Date().getTime();
           let currentLocation = await this.bgGeo.getCurrentPosition();
           const end = new Date().getTime();
-          const time = (end - start)/1000.0;
+          const time = (end - start) / 1000.0;
           this.batteryStatus.onChange().subscribe(status => {
             this.batteryPercentage = status.level;
           });
           for (let beacon of this.beaconArray) {
             await this.postCrowdPostion(beacon, currentLocation, time);
-          };
+          }
+          ;
           this.beaconArray = [];
           this.bgGeo.stop();
           this.status = 'Stop';
-        }, this.generalProviderService.getSetting('scan_time_in_s')*1000)
+        }, this.generalProviderService.getSetting('scan_time_in_s') * 1000)
       } catch (e) {
         console.log('Error ranging beacon');
       }
-    }, this.generalProviderService.getSetting('scan_period_in_s')*1000)
+    }, this.generalProviderService.getSetting('scan_period_in_s') * 1000)
   }
 
   initialise(): any {
@@ -152,7 +150,7 @@ export class HomePage implements OnDestroy {
               },
               error => console.error()
             );
-        } catch(e) {
+        } catch (e) {
           console.log(e);
         }
         resolve(true);
@@ -183,7 +181,7 @@ export class HomePage implements OnDestroy {
             resolve(true)
           });
         }
-      } catch(e) {
+      } catch (e) {
         console.log(e);
       }
     });
@@ -195,7 +193,7 @@ export class HomePage implements OnDestroy {
       const now = new Date();
 
       // Not update location of Uld that get updated in last 5 mins
-      if (!!currentBeacon && currentBeacon.date && ((<any>now - currentBeacon.date) < this.generalProviderService.getSetting('beaconTimeoutAge')) ) {
+      if (!!currentBeacon && currentBeacon.date && ((<any>now - currentBeacon.date) < this.generalProviderService.getSetting('beaconTimeoutAge'))) {
         return;
       }
 
@@ -206,7 +204,7 @@ export class HomePage implements OnDestroy {
 
       let authResponse = await this.authContext.acquireTokenSilentAsync('https://graph.windows.net', this.generalProviderService.getSetting('adalConfig')['clientId'], null);
       this.callCrowdAPI(authResponse.accessToken, beacon, currentLocation['coords'], duration);
-    } catch(e) {
+    } catch (e) {
       console.log(JSON.stringify(e));
       if (e.code == 'AD_ERROR_SERVER_USER_INPUT_NEEDED') {
         this.generalProviderService.logOut();
@@ -226,9 +224,10 @@ export class HomePage implements OnDestroy {
       return true;
     } else {
       console.log('Speed ', speed, ' Time ', time);
-      return speed*time/1000 < this.generalProviderService.getSetting('distance_move_max_in_m');
+      return speed * time / 1000 < this.generalProviderService.getSetting('distance_move_max_in_m');
     }
   }
+
   async callCrowdAPI(accessToken, beacon, coords, duration) {
     if (!this.isValidBeaconValue(coords['speed'], duration)) {
       return;
@@ -249,7 +248,7 @@ export class HomePage implements OnDestroy {
         'major': beacon['major'],
         'minor': beacon['minor']
       }
-    }
+    };
     try {
       console.log(JSON.stringify(crowdInfo));
       await this.generalProviderService.makePost(this.generalProviderService.getSetting('crowdApiUrl'), crowdInfo);
@@ -270,7 +269,7 @@ export class HomePage implements OnDestroy {
   checkBluetoothState() {
     this.diagnostic.getBluetoothState()
       .then((state) => {
-        if (state == this.diagnostic.bluetoothState.POWERED_ON){
+        if (state == this.diagnostic.bluetoothState.POWERED_ON) {
           this.bluetoothAvaible = true;
         } else {
           this.bluetoothAvaible = false;
@@ -280,12 +279,13 @@ export class HomePage implements OnDestroy {
   }
 
   registerNetworkCheck() {
-    window.addEventListener('online',  ()=>this.networkAvaible = true);
-    window.addEventListener('offline', ()=> {
+    window.addEventListener('online', () => this.networkAvaible = true);
+    window.addEventListener('offline', () => {
       this.networkAvaible = false;
       this.generalProviderService.showNetworkNoti();
     });
   }
+
   registerBluetoothCheck() {
     this.diagnostic.registerBluetoothStateChangeHandler(() => {
       this.checkBluetoothState();
@@ -319,13 +319,18 @@ export class HomePage implements OnDestroy {
   }
 
   selectBeaconStrategy(beacon) {
-    switch(this.generalProviderService.getSetting('rssi_selection_mode')) {
+    let rssi_selection_mode = this.generalProviderService.getSetting('rssi_selection_mode');
+    if (rssi_selection_mode !== 'AVERAGE' && rssi_selection_mode !== 'BEST') {
+      rssi_selection_mode = 'BEST';
+    }
+
+    switch (rssi_selection_mode) {
       case 'AVERAGE': {
         if (beacon['rssi'] == 0) {
           return;
         }
         const idx = this.beaconArray.findIndex(i => i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor);
-        if (idx > -1 ) {
+        if (idx > -1) {
           this.tempBeaconSignalList[this.beaconArray.length - 1].push(beacon);
           let arr = this.tempBeaconSignalList[idx].map((b) => {
             return b['rssi'];
@@ -343,7 +348,7 @@ export class HomePage implements OnDestroy {
       case 'BEST':
       default: {
         const idx = this.beaconArray.findIndex(i => i.uuid == beacon.uuid && i.major == beacon.major && i.minor == beacon.minor);
-        if (idx > -1 ) {
+        if (idx > -1) {
           this.beaconArray[idx]['rssi'] = beacon['rssi'] == 0 || this.beaconArray[idx]['rssi'] > beacon['rssi'] ?
             this.beaconArray[idx]['rssi'] : beacon['rssi'];
         } else {

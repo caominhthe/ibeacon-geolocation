@@ -1,6 +1,4 @@
 import {Component,Output, EventEmitter} from '@angular/core';
-import {debounceTime} from 'rxjs/operators';
-import {Subject} from 'rxjs';
 import { AlertController } from "ionic-angular/components/alert/alert-controller";
 import { NavController } from "ionic-angular/navigation/nav-controller";
 import { GeneralProviderService } from "../providers/general-provider.service";
@@ -10,8 +8,6 @@ import { GeneralProviderService } from "../providers/general-provider.service";
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
-
-  showSearchType = false;
 
   @Output()
   logout = new EventEmitter();
